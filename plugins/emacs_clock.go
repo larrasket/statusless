@@ -25,7 +25,7 @@ func init() {
 
 			return fmt.Sprintf("⌚  %s", result), nil
 		},
-		Span:   time.Minute * 2,
+		Span:   time.Minute * 1,
 		Active: emacsClockIsActive,
 		Order:  44,
 	})
