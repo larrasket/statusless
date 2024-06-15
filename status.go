@@ -41,7 +41,8 @@ func main() {
 				case <-p.Trigger:
 					s, err := p.Getter()
 					if err != nil {
-						log.Fatalf("%s: %s\n", p.Name, err.Error())
+						s = err.Error()
+						log.Printf("%s: %s\n", p.Name, s)
 					}
 					p.Cached = s
 					updateXroot(makeBar())
