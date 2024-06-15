@@ -1,0 +1,31 @@
+statusless: A dynamic, programmable, user-defined status bar for dwm (and other
+            window managers that use xroot).
+
+            See: https://suckless.org/philosophy/
+
+            Plugins are defined under plugins/ and easy example for a plugin can
+            be found on status.go/plugins/date.go:
+
+                  package plugins
+
+                  import (
+                  	"fmt"
+                  	"time"
+                  )
+
+                  // '%d %b, %H:%M:%S %p'
+                  const timeFormat = "02 Jan, 15:04:05 PM"
+                  const dateIsActive = true
+
+                  func init() {
+                  	List = append(List, Plugin{
+                  		Getter: func() (string, error) {
+
+                  			return fmt.Sprintf("  %s", time.Now().
+                            Format(timeFormat)), nil
+                  		},
+                  		Span:   time.Second,
+                  		Active: dateIsActive,
+                  		Order:  1,
+                  	})
+                  }
