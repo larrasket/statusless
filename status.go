@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"git.sr.ht/~lr0/status.go/plugins"
+	"git.sr.ht/~lr0/statusless/plugins"
 	"github.com/jezek/xgb"
 	"github.com/jezek/xgb/xproto"
 )

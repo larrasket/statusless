@@ -1,4 +1,4 @@
-module git.sr.ht/~lr0/status.go
+module git.sr.ht/~lr0/statusless
 
 go 1.22.4
 
