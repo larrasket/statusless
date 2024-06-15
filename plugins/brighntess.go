@@ -14,7 +14,7 @@ const brightnessFile = "/sys/class/backlight/intel_backlight/brightness"
 const maxBrightnessFile = "/sys/class/backlight/intel_backlight/max_brightness"
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 
 			brightnessData, err := func() ([]byte, error) {
@@ -72,10 +72,11 @@ func init() {
 				return "", err
 			}
 
-			brightnessPercentage := (float64(brightness) / float64(maxBrightness)) * 100
-			return fmt.Sprintf(" %.2f%%", brightnessPercentage), nil
+			brightnessPercentage := int((float64(brightness) / float64(maxBrightness)) * 100)
+			return fmt.Sprintf("  %d%%", brightnessPercentage), nil
 		},
-		Trigger: time.Millisecond * 180,
-		Active:  brighntessIsActive,
+		Span:   time.Millisecond * 180,
+		Active: brighntessIsActive,
+		Order:  4,
 	})
 }

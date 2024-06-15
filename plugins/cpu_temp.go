@@ -12,7 +12,7 @@ const tempFile = "/sys/class/thermal/thermal_zone0/temp"
 const cpuTempIsActive = true
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 
 			data, err := os.ReadFile(tempFile)
@@ -27,9 +27,10 @@ func init() {
 			}
 			tempCelsius := float64(tempMilli) / 1000.0
 
-			return fmt.Sprintf(" %.1f°C", tempCelsius), nil
+			return fmt.Sprintf("  %.1f°C", tempCelsius), nil
 		},
-		Trigger: time.Second * 120,
-		Active:  cpuTempIsActive,
+		Span:   time.Second * 120,
+		Active: cpuTempIsActive,
+		Order:  6,
 	})
 }

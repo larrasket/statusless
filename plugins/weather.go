@@ -11,7 +11,7 @@ const weatherIsActive = true
 const wttrInURL = "https://wttr.in/?format=%l:+%t"
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			resp, err := http.Get(wttrInURL)
 			if err != nil {
@@ -30,9 +30,10 @@ func init() {
 			}
 			weather = string(data)
 
-			return " " + weather, nil
+			return "  " + weather, nil
 		},
-		Trigger: time.Hour * 2,
-		Active:  weatherIsActive,
+		Span:   time.Hour * 2,
+		Active: weatherIsActive,
+		Order:  10,
 	})
 }

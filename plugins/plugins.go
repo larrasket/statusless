@@ -2,12 +2,14 @@ package plugins
 
 import "time"
 
-var List []plugin
+var List []Plugin
 
-type plugin struct {
-	Trigger time.Duration
+type Plugin struct {
+	Span    time.Duration
+	Trigger <-chan time.Time
 	Getter  func() (string, error)
 	Active  bool
-	Cached  *string
+	Cached  string
 	Name    string
+	Order   int
 }

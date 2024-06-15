@@ -10,12 +10,13 @@ const timeFormat = "02 Jan, 15:04:05 PM"
 const dateIsActive = true
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 
-			return fmt.Sprintf(" %s", time.Now().Format(timeFormat)), nil
+			return fmt.Sprintf("  %s", time.Now().Format(timeFormat)), nil
 		},
-		Trigger: time.Second,
-		Active:  dateIsActive,
+		Span:   time.Second,
+		Active: dateIsActive,
+		Order:  1,
 	})
 }

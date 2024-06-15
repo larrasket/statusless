@@ -10,7 +10,7 @@ import (
 const loadIsActive = true
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 
 			const loadAvgFile = "/proc/loadavg"
@@ -24,9 +24,10 @@ func init() {
 				return "", fmt.Errorf("unexpected content in /proc/loadavg")
 			}
 			loadAvgLastMinute := fields[0]
-			return " " + loadAvgLastMinute, nil
+			return "  " + loadAvgLastMinute, nil
 		},
-		Trigger: time.Second * 15,
-		Active:  loadIsActive,
+		Span:   time.Second * 15,
+		Active: loadIsActive,
+		Order:  5,
 	})
 }

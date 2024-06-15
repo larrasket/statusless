@@ -9,7 +9,7 @@ const localIPIsActive = true
 const networkInterface = "wlan0"
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			ifaces, err := net.Interfaces()
 			if err != nil {
@@ -28,13 +28,14 @@ func init() {
 							return " " + ipNet.IP.String(), nil
 						}
 					}
-					return " not found", nil
+					return "  not found", nil
 				}
 			}
 
-			return " not found", nil
+			return "  not found", nil
 		},
-		Trigger: time.Second * 120,
-		Active:  localIPIsActive,
+		Span:   time.Second * 120,
+		Active: localIPIsActive,
+		Order:  9,
 	})
 }

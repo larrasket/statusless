@@ -2,9 +2,7 @@ package plugins
 
 import (
 	"fmt"
-	"os"
-	"strconv"
-	"strings"
+	"syscall"
 	"time"
 )
 
@@ -12,42 +10,25 @@ const diskUsageIsActive = true
 const procPartitionsFile = "/proc/partitions"
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
-			const kBToGB = 1024 * 1024
+			var stat syscall.Statfs_t
 
-			data, err := os.ReadFile(procPartitionsFile)
+			// Use the root directory ("/") to get the file system statistics
+			err := syscall.Statfs("/", &stat)
 			if err != nil {
 				return "", err
 			}
 
-			lines := strings.Split(string(data), "\n")
-			var totalSize int64
+			// Calculate free space in gigabytes
+			freeSpaceGB := float64(stat.Bavail*uint64(stat.Bsize)) / (1024 * 1024 * 1024)
 
-			for _, line := range lines {
-				fields := strings.Fields(line)
-				if len(fields) < 4 {
-					continue
-				}
+			// Format the free space as a string with one decimal place
 
-				if !strings.HasPrefix(fields[3], "sd") &&
-					!strings.HasPrefix(fields[3], "nvme") {
-					continue
-				}
-
-				sizeKB, err := strconv.ParseInt(fields[2], 10, 64)
-				if err != nil {
-					continue
-				}
-
-				totalSize += sizeKB
-			}
-
-			totalSizeGB := float64(totalSize) / kBToGB
-
-			return fmt.Sprintf(" %.1fG", totalSizeGB), nil
+			return fmt.Sprintf("   %.1fG", freeSpaceGB), nil
 		},
-		Trigger: time.Second * 120,
-		Active:  diskUsageIsActive,
+		Span:   time.Second * 120,
+		Active: diskUsageIsActive,
+		Order:  8,
 	})
 }

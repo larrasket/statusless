@@ -12,7 +12,7 @@ const batteryIsActive = true
 const batteryPath = "/sys/class/power_supply/BAT0/capacity"
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile(batteryPath)
 			batteryPercentageStr := strings.TrimSpace(string(data))
@@ -21,10 +21,11 @@ func init() {
 				return "", err
 			}
 
-			return fmt.Sprintf(" %d%%", batteryPercentage), nil
+			return fmt.Sprintf("  %d%%", batteryPercentage), nil
 		},
-		Trigger: time.Second,
-		Active:  batteryIsActive,
-		Name:    "battery",
+		Span:   time.Second,
+		Active: batteryIsActive,
+		Name:   "battery",
+		Order:  3,
 	})
 }

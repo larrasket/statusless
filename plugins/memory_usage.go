@@ -12,7 +12,7 @@ const memInfoFile = "/proc/meminfo"
 const memUsageIsActive = true
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile(memInfoFile)
 			if err != nil {
@@ -42,9 +42,10 @@ func init() {
 			}
 			usedMem := totalMem - freeMem - buffers - cached
 			usedMemGB := float64(usedMem) / 1024 / 1024
-			return fmt.Sprintf("▦ %.1fG", usedMemGB), nil
+			return fmt.Sprintf("▦  %.1fG", usedMemGB), nil
 		},
-		Trigger: time.Second * 2,
-		Active:  memUsageIsActive,
+		Span:   time.Second * 2,
+		Active: memUsageIsActive,
+		Order:  7,
 	})
 }

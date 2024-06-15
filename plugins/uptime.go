@@ -11,7 +11,7 @@ import (
 const uptimeIsActive = true
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile("/proc/uptime")
 			if err != nil {
@@ -33,11 +33,12 @@ func init() {
 			hours := int(uptimeDuration.Hours())
 			minutes := int(uptimeDuration.Minutes()) % 60
 			seconds := int(uptimeDuration.Seconds()) % 60
-			uptime := fmt.Sprintf(" %02d:%02d:%02d", hours, minutes, seconds)
+			uptime := fmt.Sprintf("  %02d:%02d:%02d", hours, minutes, seconds)
 
 			return uptime, nil
 		},
-		Trigger: time.Second,
-		Active:  uptimeIsActive,
+		Span:   10 * time.Second,
+		Active: uptimeIsActive,
+		Order:  2,
 	})
 }

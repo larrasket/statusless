@@ -10,10 +10,9 @@ import (
 )
 
 const volumeIsActive = true
-const volumeCheckInterval = time.Second * 120
 
 func init() {
-	List = append(List, plugin{
+	List = append(List, Plugin{
 		Getter: func() (string, error) {
 			cmd := exec.Command("pactl", "get-sink-volume", "@DEFAULT_SINK@")
 			var out bytes.Buffer
@@ -44,9 +43,10 @@ func init() {
 				return "", err
 			}
 
-			return fmt.Sprintf(" %d%%", volume), nil
+			return fmt.Sprintf("  %d%%", volume), nil
 		},
-		Trigger: volumeCheckInterval,
-		Active:  volumeIsActive,
+		Span:   180 * time.Millisecond,
+		Active: volumeIsActive,
+		Order:  11,
 	})
 }
