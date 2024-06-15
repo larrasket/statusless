@@ -8,6 +8,7 @@ import (
 )
 
 const emacsClockIsActive = true
+const maxLen = 28
 
 func init() {
 	List = append(List, Plugin{
@@ -26,6 +27,12 @@ func init() {
 			if result == "nil" {
 				return "", nil
 			}
+
+			if len(result) > maxLen {
+				result = result[:24] + "..."
+
+			}
+
 			return fmt.Sprintf("⌚  %s", result), nil
 		},
 		Span:   time.Minute * 1,
