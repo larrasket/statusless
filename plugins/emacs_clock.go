@@ -12,7 +12,7 @@ const emacsClockIsActive = true
 func init() {
 	List = append(List, Plugin{
 		Getter: func() (string, error) {
-			cmd := exec.Command("emacsclient", "-e", "(substring-no-properties (org-clock-get-clock-string))")
+			cmd := exec.Command("emacsclient", "-e", "(when (org-clocking-p) (substring-no-properties (org-clock-get-clock-string)))")
 
 			output, err := cmd.Output()
 			if err != nil {
