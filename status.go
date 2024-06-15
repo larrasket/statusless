@@ -60,7 +60,7 @@ func makeBar() string {
 	l := len(plugins.List) - 1
 	s.WriteString("  ")
 	for i, p := range plugins.List {
-		if !p.Active {
+		if !p.Active || p.Cached == "" {
 			continue
 		}
 

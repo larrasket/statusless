@@ -23,6 +23,9 @@ func init() {
 			result = strings.Trim(result, "\"")
 			result = strings.NewReplacer("(", "", ")", "").Replace(result)
 
+			if result == "nil" {
+				return "", nil
+			}
 			return fmt.Sprintf("⌚  %s", result), nil
 		},
 		Span:   time.Minute * 1,
