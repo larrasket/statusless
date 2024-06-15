@@ -25,9 +25,9 @@ func init() {
 			if err != nil {
 				return "", err
 			}
-			tempCelsius := float64(tempMilli) / 1000.0
+			tempCelsius := int(float64(tempMilli) / 1000.0)
 
-			return fmt.Sprintf("  %.1f°C", tempCelsius), nil
+			return fmt.Sprintf("  %d°C", tempCelsius), nil
 		},
 		Span:   time.Second * 120,
 		Active: cpuTempIsActive,
