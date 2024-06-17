@@ -24,10 +24,17 @@ func main() {
 	for i, p := range plugins.List {
 		s, err := p.Getter()
 		if err != nil {
-			log.Fatalf("%s: %s\n", p.Name, err.Error())
+			log.Printf("%s: %s\n", p.Name, err.Error())
+			if plugins.List[i].ErrorSpan != (0 * time.Second) {
+				plugins.List[i].Trigger = time.NewTicker(p.ErrorSpan)
+				plugins.List[i].UsingErrorSpan = true
+			}
+
 		}
 		plugins.List[i].Cached = s
-		plugins.List[i].Trigger = time.NewTicker(p.Span)
+		if !plugins.List[i].UsingErrorSpan {
+			plugins.List[i].Trigger = time.NewTicker(p.Span)
+		}
 	}
 
 	// set first bar

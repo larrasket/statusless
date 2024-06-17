@@ -34,8 +34,9 @@ func init() {
 
 			return "  not found", nil
 		},
-		Span:   time.Second * 120,
-		Active: localIPIsActive,
-		Order:  9,
+		Span:      time.Second * 120,
+		ErrorSpan: 10 * time.Second,
+		Active:    localIPIsActive,
+		Order:     9,
 	})
 }
