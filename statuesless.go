@@ -27,7 +27,7 @@ func main() {
 			log.Fatalf("%s: %s\n", p.Name, err.Error())
 		}
 		plugins.List[i].Cached = s
-		plugins.List[i].Trigger = time.NewTicker(p.Span).C
+		plugins.List[i].Trigger = time.NewTicker(p.Span)
 	}
 
 	// set first bar
@@ -38,11 +38,20 @@ func main() {
 		go func(p *plugins.Plugin) {
 			for {
 				select {
-				case <-p.Trigger:
+				case <-p.Trigger.C:
 					s, err := p.Getter()
 					if err != nil {
 						s = err.Error()
 						log.Printf("%s: %s\n", p.Name, s)
+						if p.ErrorSpan != (0 * time.Second) {
+							p.UsingErrorSpan = true
+							p.Trigger.Stop()
+							p.Trigger = time.NewTicker(p.ErrorSpan)
+						}
+					} else if p.UsingErrorSpan {
+						p.UsingErrorSpan = false
+						p.Trigger.Stop()
+						p.Trigger = time.NewTicker(p.Span)
 					}
 					p.Cached = s
 					updateXroot(makeBar())

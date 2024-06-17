@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const loadIsActive = true
+const loadavgIsActive = true
 
 func init() {
 	List = append(List, Plugin{
@@ -27,7 +27,7 @@ func init() {
 			return "  " + loadAvgLastMinute, nil
 		},
 		Span:   time.Second * 15,
-		Active: loadIsActive,
+		Active: loadavgIsActive,
 		Order:  5,
 	})
 }

@@ -23,7 +23,7 @@ func init() {
 
 			return fmt.Sprintf("  %d%%", batteryPercentage), nil
 		},
-		Span:   time.Second,
+		Span:   30 * time.Second,
 		Active: batteryIsActive,
 		Name:   "battery",
 		Order:  3,

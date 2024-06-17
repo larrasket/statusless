@@ -32,8 +32,9 @@ func init() {
 
 			return "  " + weather, nil
 		},
-		Span:   time.Hour * 2,
-		Active: weatherIsActive,
-		Order:  10,
+		Span:      time.Hour * 2,
+		ErrorSpan: 10 * time.Second,
+		Active:    weatherIsActive,
+		Order:     10,
 	})
 }
