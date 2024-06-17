@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const loadavgIsActive = false
+const loadavgIsActive = true
 
 func init() {
 	List = append(List, Plugin{

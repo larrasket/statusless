@@ -7,7 +7,7 @@ import (
 	"time"
 )
 
-const weatherIsActive = true
+const weatherIsActive = false
 const wttrInURL = "https://wttr.in/?format=%l:+%t"
 
 func init() {

@@ -43,7 +43,7 @@ func init() {
 				return "", err
 			}
 
-			return fmt.Sprintf("  %d%%", volume), nil
+			return fmt.Sprintf("  %d%%", volume), nil
 		},
 		Span:   180 * time.Millisecond,
 		Active: volumeIsActive,
