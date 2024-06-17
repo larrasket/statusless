@@ -13,7 +13,6 @@ const wttrInURL = "https://wttr.in/?format=%l:+%t"
 func init() {
 	List = append(List, Plugin{
 		Getter: func() (string, error) {
-			fmt.Println("called")
 			resp, err := http.Get(wttrInURL)
 			if err != nil {
 				return "", err
