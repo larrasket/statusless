@@ -7,13 +7,12 @@ import (
 	"time"
 )
 
-const emacsClockIsActive = true
-const emacsClockMaxLen = 28
+const emacsAwqatIsActive = true
 
 func init() {
 	List = append(List, Plugin{
 		Getter: func() (string, error) {
-			cmd := exec.Command("emacsclient", "-e", "(when (org-clocking-p) (substring-no-properties (org-clock-get-clock-string)))")
+			cmd := exec.Command("emacsclient", "-e", "(when (org-clocking-p) (substring-no-properties awqat-mode-line-string))")
 
 			output, err := cmd.Output()
 			if err != nil {
@@ -33,10 +32,10 @@ func init() {
 
 			}
 
-			return fmt.Sprintf("⌚  %s", result), nil
+			return fmt.Sprintf("%s", result), nil
 		},
 		Span:   time.Minute * 1,
-		Active: emacsClockIsActive,
-		Order:  44,
+		Active: emacsAwqatIsActive,
+		Order:  15,
 	})
 }

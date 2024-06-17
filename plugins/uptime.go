@@ -37,7 +37,7 @@ func init() {
 
 			return uptime, nil
 		},
-		Span:   10 * time.Second,
+		Span:   3 * time.Second,
 		Active: uptimeIsActive,
 		Order:  2,
 	})
