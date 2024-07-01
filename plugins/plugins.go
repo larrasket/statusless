@@ -1,8 +1,14 @@
 package plugins
 
-import "time"
+import (
+	"log"
+	"time"
 
-var List []Plugin
+	"github.com/jezek/xgb"
+)
+
+var PList []Plugin
+var C *xgb.Conn
 
 type Plugin struct {
 	Span time.Duration
@@ -19,4 +25,12 @@ type Plugin struct {
 	Cached         string
 	Name           string
 	Order          int
+}
+
+func init() {
+	var err error
+	C, err = xgb.NewConn()
+	if err != nil {
+		log.Fatalf("Failed to connect to X server: %v", err)
+	}
 }

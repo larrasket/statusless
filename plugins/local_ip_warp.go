@@ -36,7 +36,7 @@ func isServiceActive(serviceName string) (bool, error) {
 	// Execute the systemctl command to check the service status
 	cmd := exec.Command("systemctl", "is-active", serviceName)
 	output, err := cmd.Output()
-	if err != nil && !strings.Contains(string(output), "inactive") {
+	if err != nil && !strings.Contains(string(output), "inactive") && !strings.Contains(string(output), "failed") {
 		return false, err
 	}
 

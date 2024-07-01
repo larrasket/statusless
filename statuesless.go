@@ -1,48 +1,54 @@
 package main
 
 import (
+	. "git.sr.ht/~lr0/statusless/plugins"
+	"github.com/jezek/xgb"
+	"github.com/jezek/xgb/xproto"
+	"github.com/samber/lo"
 	"log"
 	"sort"
 	"strings"
 	"sync"
 	"time"
-
-	"git.sr.ht/~lr0/statusless/plugins"
-	"github.com/jezek/xgb"
-	"github.com/jezek/xgb/xproto"
 )
 
 const sep = "  ┃  "
 const plain = "┃"
 
+// TODO priorities. I think each plugin should have its priority.
 func main() {
-	sort.Slice(plugins.List, func(i, j int) bool {
-		return plugins.List[i].Order > plugins.List[j].Order
+
+	PList = lo.Filter(PList, func(item Plugin, index int) bool {
+		return item.Active
+	})
+
+	sort.Slice(PList, func(i, j int) bool {
+		return PList[i].Order > PList[j].Order
 	})
 
 	// init the latest value for all plugins and the ticker
-	for i, p := range plugins.List {
+	for i, p := range PList {
+
 		s, err := p.Getter()
 		if err != nil {
 			log.Printf("%s: %s\n", p.Name, err.Error())
-			if plugins.List[i].ErrorSpan != (0 * time.Second) {
-				plugins.List[i].Trigger = time.NewTicker(p.ErrorSpan)
-				plugins.List[i].UsingErrorSpan = true
+			if PList[i].ErrorSpan != (0 * time.Second) {
+				PList[i].Trigger = time.NewTicker(p.ErrorSpan)
+				PList[i].UsingErrorSpan = true
 			}
-
 		}
-		plugins.List[i].Cached = s
-		if !plugins.List[i].UsingErrorSpan {
-			plugins.List[i].Trigger = time.NewTicker(p.Span)
+		PList[i].Cached = s
+		if !PList[i].UsingErrorSpan {
+			PList[i].Trigger = time.NewTicker(p.Span)
 		}
 	}
 
 	// set first bar
-	updateXroot(makeBar())
+	updateXroot(C, makeBar())
 
 	var wg sync.WaitGroup
-	for i := range plugins.List {
-		go func(p *plugins.Plugin) {
+	for i := range PList {
+		go func(p *Plugin) {
 			for {
 				select {
 				case <-p.Trigger.C:
@@ -61,10 +67,10 @@ func main() {
 						p.Trigger = time.NewTicker(p.Span)
 					}
 					p.Cached = s
-					updateXroot(makeBar())
+					updateXroot(C, makeBar())
 				}
 			}
-		}(&plugins.List[i])
+		}(&PList[i])
 	}
 	wg.Add(1)
 	wg.Wait()
@@ -73,10 +79,10 @@ func main() {
 
 func makeBar() string {
 	var s strings.Builder
-	l := len(plugins.List) - 1
+	l := len(PList) - 1
 	s.WriteString("  ")
-	for i, p := range plugins.List {
-		if !p.Active || p.Cached == "" {
+	for i, p := range PList {
+		if p.Cached == "" {
 			continue
 		}
 
@@ -91,20 +97,11 @@ func makeBar() string {
 	return s.String()
 }
 
-func updateXroot(s string) {
-	conn, err := xgb.NewConn()
-	if err != nil {
-		log.Fatalf("Failed to connect to X server: %v", err)
-	}
-	defer conn.Close()
-
-	setup := xproto.Setup(conn)
-	root := setup.DefaultScreen(conn).Root
-
-	err = xproto.ChangePropertyChecked(
+func updateXroot(conn *xgb.Conn, s string) {
+	err := xproto.ChangePropertyChecked(
 		conn,
 		xproto.PropModeReplace,
-		root,
+		xproto.Setup(conn).DefaultScreen(conn).Root,
 		xproto.AtomWmName,
 		xproto.AtomString,
 		8, // Format (8-bit)
@@ -114,5 +111,4 @@ func updateXroot(s string) {
 	if err != nil {
 		log.Fatalf("Failed to change root window name: %v", err)
 	}
-
 }
