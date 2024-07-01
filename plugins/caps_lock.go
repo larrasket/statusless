@@ -1,6 +1,7 @@
 package plugins
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/jezek/xgb"
@@ -22,7 +23,7 @@ func init() {
 			} else if s == 3 {
 				return "CapsLck: ON", nil
 			}
-			return "UNKOWN", nil
+			return fmt.Sprintf("UNKOWN Signal %d", s), nil
 		},
 		Span:   180 * time.Millisecond,
 		Active: CapsLockIsActive,
