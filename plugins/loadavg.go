@@ -10,7 +10,7 @@ import (
 const loadavgIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 
 			const loadAvgFile = "/proc/loadavg"

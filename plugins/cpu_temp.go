@@ -12,7 +12,7 @@ const tempFile = "/sys/class/thermal/thermal_zone0/temp"
 const cpuTempIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 
 			data, err := os.ReadFile(tempFile)

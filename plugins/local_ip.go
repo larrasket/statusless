@@ -9,7 +9,7 @@ const localIPIsActive = false
 const networkInterface = "wlan0"
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter:    getLocalIP,
 		Span:      time.Second * 120,
 		ErrorSpan: 10 * time.Second,

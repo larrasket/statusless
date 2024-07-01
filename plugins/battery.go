@@ -12,7 +12,7 @@ const batteryIsActive = true
 const batteryPath = "/sys/class/power_supply/BAT0/capacity"
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile(batteryPath)
 			batteryPercentageStr := strings.TrimSpace(string(data))

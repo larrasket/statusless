@@ -10,7 +10,7 @@ const timeFormat = "02 Jan, 15:04:05 PM"
 const dateIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 
 			return fmt.Sprintf("  %s", time.Now().Format(timeFormat)), nil

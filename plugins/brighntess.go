@@ -14,7 +14,7 @@ const brightnessFile = "/sys/class/backlight/intel_backlight/brightness"
 const maxBrightnessFile = "/sys/class/backlight/intel_backlight/max_brightness"
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 
 			brightnessData, err := func() ([]byte, error) {

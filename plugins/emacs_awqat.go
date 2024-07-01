@@ -10,7 +10,7 @@ import (
 const emacsAwqatIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			cmd := exec.Command("emacsclient", "-e", "(substring-no-properties awqat-mode-line-string)")
 

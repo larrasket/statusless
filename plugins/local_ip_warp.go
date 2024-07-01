@@ -9,7 +9,7 @@ import (
 const localIPWARPIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			ip, err := getLocalIP()
 			if err != nil {

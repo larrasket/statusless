@@ -12,7 +12,7 @@ const memInfoFile = "/proc/meminfo"
 const memUsageIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile(memInfoFile)
 			if err != nil {

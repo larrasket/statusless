@@ -10,7 +10,7 @@ const diskUsageIsActive = true
 const procPartitionsFile = "/proc/partitions"
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			var stat syscall.Statfs_t
 

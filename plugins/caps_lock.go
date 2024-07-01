@@ -10,7 +10,7 @@ import (
 const CapsLockIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			s, err := capsLock(C)
 			if err != nil {

@@ -11,7 +11,7 @@ const weatherIsActive = false
 const wttrInURL = "https://wttr.in/?format=%l:+%t"
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			resp, err := http.Get(wttrInURL)
 			if err != nil {

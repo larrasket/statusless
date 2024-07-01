@@ -12,7 +12,7 @@ import (
 const volumeIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			cmd := exec.Command("pactl", "get-sink-volume", "@DEFAULT_SINK@")
 			var out bytes.Buffer

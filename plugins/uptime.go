@@ -11,7 +11,7 @@ import (
 const uptimeIsActive = true
 
 func init() {
-	List = append(List, Plugin{
+	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
 			data, err := os.ReadFile("/proc/uptime")
 			if err != nil {
