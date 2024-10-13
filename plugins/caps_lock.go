@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jezek/xgb"
 	"github.com/jezek/xgb/xproto"
 )
 
@@ -13,17 +12,16 @@ const CapsLockIsActive = true
 func init() {
 	PList = append(PList, Plugin{
 		Getter: func() (string, error) {
-			s, err := capsLock(C)
+			s, err := getCapsLockState()
 			if err != nil {
 				return "", err
 			}
 
-			if s == 2 {
-				return "", nil
-			} else if s == 3 {
+			if s {
 				return "CapsLck: ON", nil
+			} else {
+				return "", nil
 			}
-			return fmt.Sprintf("UNKOWN Signal %d", s), nil
 		},
 		Span:   180 * time.Millisecond,
 		Active: CapsLockIsActive,
@@ -31,10 +29,11 @@ func init() {
 	})
 }
 
-func capsLock(conn *xgb.Conn) (uint32, error) {
-	state, err := xproto.GetKeyboardControl(conn).Reply()
+func getCapsLockState() (bool, error) {
+
+	keyboard, err := xproto.GetKeyboardControl(C).Reply()
 	if err != nil {
-		return 0, err
+		return false, fmt.Errorf("failed to get keyboard control: %v", err)
 	}
-	return state.LedMask, err
+	return keyboard.LedMask&0x1 != 0, nil
 }

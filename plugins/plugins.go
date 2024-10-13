@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/jezek/xgb"
+	"github.com/jezek/xgb/xinerama"
 )
 
 var PList []Plugin
@@ -32,5 +33,10 @@ func init() {
 	C, err = xgb.NewConn()
 	if err != nil {
 		log.Fatalf("Failed to connect to X server: %v", err)
+	}
+
+	err = xinerama.Init(C)
+	if err != nil {
+		log.Fatalf("failed to initialize Xinerama extension: %v", err)
 	}
 }
