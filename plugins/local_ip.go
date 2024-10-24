@@ -6,7 +6,7 @@ import (
 )
 
 const localIPIsActive = false
-const networkInterface = "wlan0"
+const networkInterface = "wlp1s0"
 
 func init() {
 	PList = append(PList, Plugin{
