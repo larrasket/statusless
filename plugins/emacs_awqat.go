@@ -32,7 +32,7 @@ func init() {
 
 			}
 
-			return fmt.Sprintf(" %s", result), nil
+			return fmt.Sprintf("%s", result), nil
 		},
 		Span:   time.Second * 40,
 		Active: emacsAwqatIsActive,
